@@ -108,24 +108,24 @@ def del_record(cur, table):
   pk = get_primary_key(cur, table)
   if pk is None:
     return
-  rec_ID = input(f"Enter {pk} of record to delete: ")
+  rec_ID = input(f"Enter {pk}: ")
   query = f"DELETE FROM {table} WHERE {pk} = %s"
   cur.execute(query, (rec_ID,))
   print("Record deleted successfully :>")
 
 def main():
   quit = False
+  credentials = ("Host", "User", "Password", "Database", "Table")
+  credentials = ask_for(credentials)
+  mydb = connect_sql(
+    credentials["Host"],
+    credentials["User"],
+    credentials["Password"],
+    credentials["Database"]
+  )
+  table = credentials["Table"]
+  cur = mydb.cursor()
   while not quit:
-    credentials = ("Host", "User", "Password", "Database", "Table")
-    credentials = ask_for(credentials)
-    mydb = connect_sql(
-      credentials["Host"],
-      credentials["User"],
-      credentials["Password"],
-      credentials["Database"]
-    )
-    cur = mydb.cursor()
-    table = credentials["Table"]
     print()
     print("Enter 'n' for selecting '(n) option'")
     print("(0) Quit")
